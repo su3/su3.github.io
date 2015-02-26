@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>认识 Objective-C 的根基 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>认识 Objective-C 的根基</h1>
+        <time>2013-12-04 21:22</time>
+        <article>
+            <p>1 适应 Objective-C</p>
+<h2>1.1 认识 Objective-C 的根基</h2>
+<ul>
+<li><p>Ojbective-C 的运行时（runtime）组件负责做大部分重要的事情，而不是由编译器来做。runtime 包括了所有的数据结构和功能，最重要的是，runtime 是所有代码，以及这些代码所链接到的动态库的集合。</p>
+</li>
+<li><p>对象总是分配在内存的堆空间（heap space）中，而不是在栈（stack）中。</p>
+<p><code class="prettyprint">NSString *someString = @"The string";</code> <br />
+<code class="prettyprint">NSString *anotherString = someString;</code></p>
+</li>
+<li><p>这里只有一个 NSString 实例，但有两个变量指向同一个实例。
+这意味着当前栈结构（stack frame）中分配了2比特的内存给一个指针（32位系统为4字节，64位系统为8字节），这个内存地址包含同一个值：NSString 实例的内存地址。</p>
+</li>
+<li><p>Objective-C 通过引用计数这一内存管理体系把内存管理的工作抽象化了，你不需要用 malloc 和 free 去为对象分配和释放内存。</p>
+</li>
+<li><p>没有 * 号的变量定义意味着这些变量使用的是栈空间，这些变量并不持有对象。使用对象会影响运行，比如分配和释放堆空间的时候。而使用非对象类型则不会。非对象类型包括 int, float, double, char 等等。</p>
+</li>
+</ul>
+<h3>记住</h3>
+<ul>
+<li>Objective-C 是 C 的超集，增加了面向对象特性。 Objective-C 用消息结构动态绑定，意味着对象类型是在运行时（runtime）发现。执行所收到的消息的是运行时，而不是编译器。</li>
+<li>理解C的核心概念会帮助写高效的 Objective-C。尤其是需要理解C的内存模式和指针。</li>
+</ul>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>打开 App 的 Review 页 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>打开 App 的 Review 页</h1>
+        <time>2012-11-03 12:54</time>
+        <article>
+            <p>引导用户对 APP 进行评分，不经过 Safari 跳转，也不显示 App 介绍，直接打开 App Store 中的评论页面：</p>
+<pre><code class="prettyprint">NSString *myAppID = @"123456789";
+NSString *url = [NSString stringWithFormat: 
+@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&amp;id=%@", 
+myAppID];
+[[UIApplication sharedApplication] openURL: [NSURL URLWithString: url]];
+</code></pre>
+<p><code class="prettyprint">123456789</code> 对应 APP 的 id 号。</p>
+<p>需要在真机中测试,模拟器中无响应。</p>
+<p>参考：<a href="http://stackoverflow.com/questions/3654144/direct-rate-in-itunes-link-in-my-app/4382571#4382571">direct-rate-in-itunes-link-in-my-app</a></p>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

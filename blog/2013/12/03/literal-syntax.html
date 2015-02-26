@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>尽量用字面量语法替代同等的方法 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>尽量用字面量语法替代同等的方法</h1>
+        <time>2013-12-03 21:22</time>
+        <article>
+            <h2>尽量用字面量语法（Literal Syntax）替代同等的方法</h2>
+<ul>
+<li>字面量语法减少了代码尺寸，并且使之更容易阅读。</li>
+</ul>
+<h3>字面量 Number</h3>
+<ul>
+<li>NSNumber *someNumber = @1; int, float, double, bool, char 都可以这样创建。</li>
+<li>NSNumber *charNumber = @'a'；</li>
+<li>也可以用在表达式中 NSNumber *expressionNumber = @(x * y);</li>
+</ul>
+<h3>字面量 Array</h3>
+<ul>
+<li>NSArray *animals = @[ @"cat", @"dog", @"mouse", @"badger" ];</li>
+<li>在数组中取对象 NSString *dog = animals[1];</li>
+<li>字面量语法创建的 array，如果其中一个为 nil 即会抛出异常。利于创建更可靠的程序。</li>
+</ul>
+<h3>字面量 Dictionary</h3>
+<ul>
+<li>以前的方法是 <object>,<key> 的对应关系，看起来很怪，而且不便阅读。</li>
+<li>NSDictionary *personData = @{@"firstName" : @"Matt", @"lastName" : "Galloway", @"age" : @28};</li>
+<li>非常简明，而且 <key> 在 <object> 之前。</li>
+<li>取值 NSString *lastName = personData[@"lastName"];</li>
+</ul>
+<h3>可变 Array 和 Dictionary</h3>
+<ul>
+<li>替代 [mutalbeArray replaceObjectAtIndex:1 withObject:@"dog"] 的字面量方法 mutableArray[1] = @"dog";</li>
+<li>字典用 mutaleDictionary[@"lastName"] = @"Galloway";</li>
+</ul>
+<h3>局限性</h3>
+<ul>
+<li>字面量中的对象必须是来自 Foundation 框架，不能是你自定义的子类。在这种情况下传统的创建方法仍然有用。</li>
+<li>创建可变数组用 mutable copy：NSMutableArray *mutable = [@[ @1, @2, @3, @4, @5 ] mutableCopy]; 这样增加了一个额外的对象，不过好处是可以使用字面量方法。</li>
+</ul>
+<h3>记住</h3>
+<ul>
+<li>使用字面量语法创建 string, number, array, dictionary，比传统方法更清晰更简洁；</li>
+<li>访问索引一个array或者一个dictionary中的key使用脚注方法；</li>
+<li>尝试在 array 或 dictionary 中插入 nil 会导致抛出异常。因而一定要确保值不为 nil。</li>
+</ul>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

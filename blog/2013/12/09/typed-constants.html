@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>尽量用类型化的常量替代预处理器的 #define 方法 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>尽量用类型化的常量替代预处理器的 #define 方法</h1>
+        <time>2013-12-09 20:10</time>
+        <article>
+            <h2>类型化常量 （Typed constants）</h2>
+<pre><code class="prettyprint">#define ANIMATION_DURATION 0.3
+</code></pre>
+<p>这是一个预处理器指令，当编译器在代码中发现有 ANIMATION_DURATION 时，就将它替换为 0.3，编译器不知道这个字符串所指代的数值属性。
+更好的办法是用常量去替代预处理器定义：</p>
+<pre><code class="prettyprint">static const NSTimerInterval kAnimationDuration = 0.3
+</code></pre>
+<p>这样清楚地定义了这个常量是什么，类型是 NSTimerInterval。他可以使阅读代码的人容易理解。注意常量的命名，加前缀 k 表示在本地单元（.m）中适用。如果要在外部使用这个常量，应该加上当前class的名字作为前缀：</p>
+<pre><code class="prettyprint">EOCViewClassAnimationDration
+</code></pre>
+<p>把常量定义在 .h 中是非常不好的实践。</p>
+<p>重点是同时声明 static 和 const。const 限定它不能被修改。static 限定定义这个变量所在的转换单元（translation unit）。Objective-C中，每个class（.m文件）有一个转换单元。
+如果变量未声明 static，编译器会为它生成一个外部符号。如果其他的转换单元声明了同样名字的变量，程序会报错。</p>
+<p>实际上，当用 static 和 const 去定义一个变量时，编译器不只是像 #define 那样去盲找和替换。至少它显现了所属的类型信息。</p>
+<p>有时候你想让一个常量暴露在外部，应该这样定义：</p>
+<pre><code class="prettyprint">//在 .h 中
+extern NSString *const EOCStringConstant;
+//在 .m 中
+NSString *const EOCStringConstant = @"VALUE";
+</code></pre>
+<p>.h 中的关键词 extern 告诉编译器在全局符号表中有一个 EOCStringConstant。意思是编译器可以使用这个常量，只知道它存在于所链接到的二进制文件中，但不必知道它是怎样定义。 </p>
+<p>这样定义编译器知道这个值不能被更改，并且这个值会被到处使用。</p>
+<h2>记住</h2>
+<ul>
+<li>避免预处理器定义。它们不包含类型信息，只是在编译前执行查找替换。它们可以在没有警告下被重新定义，产生不一样的值。</li>
+<li>在实现文件中定义转换单元常量如 static const。这些常量不会暴露给全局符号表，因此它们的名字不需要命名空间。</li>
+<li>定义全局常量在.h文件中，然后在.m中定义它们的值。这些常量会出现在全局符号表（global symbol table）中，因此它们的名字应该有命名空间，通常以class命为前缀表示。</li>
+</ul>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

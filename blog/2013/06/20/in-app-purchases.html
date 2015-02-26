@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>In-App Purchases - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>In-App Purchases</h1>
+        <time>2013-06-20 20:47</time>
+        <article>
+            <p><a href="https://github.com/MugunthKumar/MKStoreKit">MKStoreKit</a> 是 GitHut 上 forks 和 star 最多的 In-App Purchases 框架，采用 MIT 协议，可以免费集成到自己的工程中，目前版本为5.0。</p>
+<p>MKStoreKit 做了比较多细节，比如和自己的服务器交互，或者内购过程中接到来电，等等情况，如果自己实现 In-App Purchases，要做的工作太多，用现成的框架可以节省大量时间（话虽如此，解决细节问题还是伤了不少脑筋）。</p>
+<h2>准备工作：</h2>
+<h3>创建测试用户</h3>
+<ol>
+<li>iTunes Connect > Manage Users > Test Users > Add New User，这个账户仅用于测试</li>
+<li>打开测试设备中的 App Store，退出现有登录帐号，测试账户不需要在这里登录，总之设备中的 App Store 保持未登录状态。</li>
+</ol>
+<h3>创建产品ID</h3>
+<ol>
+<li>在  iTunes Connect > Manage Your Apps 中 Add New App。</li>
+<li>App Information > Manage In-App Purchases > Create New</li>
+<li>如果APP ID是com.company.appname，那么product ID设为com.company.appname.xxx 比较好识别</li>
+<li>type我选non-consumable，意思是内购的功能不是消耗性的，一次购买永久有效。</li>
+<li>前面Reference Name 填什么无所谓，用户看到的是 Language 下的 Display Name，确定这个名称好理解并且足够短，在 iTunes 中显示不被截断最好。</li>
+<li>Screenshot for review 可以暂不提交，最后文件上传前再提交，这是提示购买的节目，只有审核人员看得到，用户在商店中看不到。</li>
+</ol>
+<h3>MKStoreKit 所有文件拷贝至工程目录下_</h3>
+<ol>
+<li>删除 Server Code 目录，因为不需要自己的服务器提供内容；</li>
+<li>删除 VerificationController.h 和 VerificationController.m，因为 它使用到的 uniqueIdentifier 方法已被 Apple 禁用，如果不需要跟自己的服务器交互用不到它，一定需要唯一设备标识的话可以用其他替代方案。使用 uniqueIdentifier 会被 reject。</li>
+<li>把 MKStoreKit 拖进 Xcode。</li>
+</ol>
+<h2>基本设置：</h2>
+<p>有两个文件需要修改</p>
+<ol>
+<li>MKStoreKitConfigs.h 中添加 #define kFeatureAId @"com.company.com.propack"，所有 product id 用不同的常量名定义到这里；</li>
+<li>MKStoreKitConfigs.plist 中，根据产品类型添加 product id</li>
+</ol>
+<h2>实现方法：</h2>
+<h3>初始化</h3>
+<p>在 application:didFinishLaunchingWithOptions: 中呼叫</p>
+<pre><code class="prettyprint">[MKStoreManager sharedManager];
+</code></pre>
+<h3>判断是否已购买</h3>
+<pre><code class="prettyprint">if([MKStoreManager isFeaturePurchased:kFeatureID])
+{
+    //unlock it
+}
+</code></pre>
+<h3>购买</h3>
+<pre><code class="prettyprint">[[MKStoreManager sharedManager] buyFeature:kFeatureAId
+                            onComplete:^(NSString* purchasedFeature,
+                                         NSData* purchasedReceipt,
+                                         NSArray* availableDownloads)
+                                         {
+ NSLog(@"Purchased: %@", purchasedFeature);
+ }onCancelled:^{
+ NSLog(@"User Cancelled Transaction");
+ }];
+</code></pre>
+<h3>恢复已购</h3>
+<pre><code class="prettyprint">[[MKStoreManager sharedManager] restorePreviousTransactionsOnComplete:^{
+            if ([MKStoreManager isFeaturePurchased:kFeatureID]) {
+               //
+            } else {
+               //
+            }
+            [[self.view viewWithTag:1001] removeFromSuperview];
+        } onError:^(NSError* error){
+            NSLog(@"Restore failed: %@", error);
+        }];
+</code></pre>
+<h3>获取本地货币单位的价格</h3>
+<pre><code class="prettyprint">NSDictionary *prices = [[MKStoreManager sharedManager] pricesDictionary];
+NSString *upgradePrice = [prices objectForKey:@"com.company.appname.propack"];
+</code></pre>
+<h2>注意事项：</h2>
+<ol>
+<li><p>移除所有购买信息：仅删除重装APP是不够的，需要用下面这句移除已保存的信息。</p>
+<p><code class="prettyprint">[[MKStoreManager sharedManager] removeAllKeychainData]</code></p>
+</li>
+<li><p>设备上运行，永远从 XCode 中唤起APP运行，不要在设备上点 Icon 运行。菲测试环境下 Apple 会认为你在用测试帐号购买，会把该帐号锁死。</p>
+</li>
+</ol>
+<h2>Debug:</h2>
+<h3>1</h3>
+<pre><code class="prettyprint">NSUbiquitousKeyValueStore error: com.company.appname has no valid com.apple.developer.ubiquity-kvstore-identifier entitlement
+</code></pre>
+<p>因为 MKStoreKit 通过 iCloud 同步购买信息，而当前开发的APP所使用的 App ID 不支持 iCloud。</p>
+<p>解决办法有2：</p>
+<ul>
+<li>登录 iOS PROVISIONING PORTAL 修改对应的APP ID，设置 iCloud 项为 enable;</li>
+<li>如果不想通过 iClund同步：修改 MKStoreManager.m 中的 iCloudAvailable 方法，使它永远返回 NO 值；把 updateFromiCloud 内的方法注释掉。</li>
+</ul>
+<p><a href="https://github.com/MugunthKumar/MKStoreKit/issues/89">参考</a></p>
+<h3>2</h3>
+<p>提交了之后发现 Manage In-App Purchases 中有警告提示：</p>
+<blockquote>
+<p>In-App Purchases cannot be added to this version because it has already been submitted for review. To manage your In-App Purchases, go back to the App Summary page and click on the Manage In-App Purchases button.</p>
+</blockquote>
+<p>需要在APP的 View Details 页中勾选 In-App purchases项，可是这一项不能编辑。因为我已经上传文件包了，所以先reject了它，然后就可以勾选了，然后再提交， 然后 manage in-app purchases 中的状态也由 ready to submit 变成了 waiting for review。</p>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

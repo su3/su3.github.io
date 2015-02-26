@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>定制 TableView - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>定制 TableView</h1>
+        <time>2012-11-07 22:42</time>
+        <article>
+            <h3>设置TableView 背景图</h3>
+<p>iOS 5 可以这样</p>
+<pre><code class="prettyprint">myTable.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgSetting.png"]];
+</code></pre>
+<p>以上方法在 iOS 6 无效，同时支持 iOS 5 &amp; iOS 6 可以这样设置</p>
+<pre><code class="prettyprint">UIView *tableBg = [[UIView alloc] init];
+tableBg.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"bgSetting.png"]];
+myTable.backgroundView = tableBg;
+</code></pre>
+<h3>Section 背景透明</h3>
+<pre><code class="prettyprint">- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *result = [[UIView alloc] init];
+    [result setBackgroundColor:[UIColor clearColor]];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(19, 0, 100, 35)];
+    label1.backgroundColor = [UIColor clearColor];
+    label1.textColor = [UIColor grayColor];
+    [result addSubview:label1];
+    if (section == 0) {
+    label1.text = @"Sounds";
+    }else{
+    label1.text = @"Screen-Lock";
+    }
+    return result;
+}
+</code></pre>
+<h3>TableViewCell 的背景图片</h3>
+<pre><code class="prettyprint">- (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+cell.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"image.png"]];
+}
+</code></pre>
+<h3>改变分割线的颜色</h3>
+<pre><code class="prettyprint">myTable.separatorColor = [UIColor clearColor];
+</code></pre>
+<h3>去掉分割线</h3>
+<pre><code class="prettyprint">myTable.separatorStyle = UITableViewCellSeparatorStyleNone;
+</code></pre>
+<h3>改变 UITableViewCellAccessoryCheckmark 的颜色？</h3>
+<p>UITableViewCellAccessoryCheckmark 的颜色改不了，把 cell.accessoryType 改为设置 cell.accessoryView</p>
+<pre><code class="prettyprint">UIView *checkedView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 20)];
+checkedView.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"checked.png"]];
+cell.accessoryView = checkedView;
+</code></pre>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

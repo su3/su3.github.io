@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>为 iPhone 5 的屏幕（retina 4-inch）配置图片 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>为 iPhone 5 的屏幕（retina 4-inch）配置图片</h1>
+        <time>2012-10-20 09:38</time>
+        <article>
+            <h3>个别配置</h3>
+<p>根据屏幕尺寸判断</p>
+<pre><code class="prettyprint">CGRect screenBounds = [[UIScreen mainScreen] bounds];
+if (screenBounds.size.height == 568) {
+     // code for 4-inch screen
+} else {
+    // code for 3.5-inch screen
+}
+</code></pre>
+<p>参考 - <a href="http://stackoverflow.com/questions/12395200/how-to-develop-or-migrate-apps-for-iphone-5-screen-resolution">how-to-develop-or-migrate-apps-for-iphone-5-screen-resolution</a></p>
+<h3>通用配置</h3>
+<p>如果有多张图片需要特别指定，可以用 #define 重写图片名称</p>
+<pre><code class="prettyprint">#define isPhone568 ([[UIDevice currentDevice] userInterfaceIdiom] == 
+UIUserInterfaceIdiomPhone &amp;&amp; [UIScreen mainScreen].bounds.size.height == 568)
+#define iPhone568ImageNamed(image) 
+(isPhone568 ? [NSString stringWithFormat:@"%@-568h.%@", 
+[image stringByDeletingPathExtension], 
+[image pathExtension]] : image)
+#define iPhone568Image(image) ([UIImage imageNamed:iPhone568ImageNamed(image)])
+</code></pre>
+<p>调用方法：</p>
+<pre><code class="prettyprint">[UIImage imageNamed:iPhone568ImageNamed(@"image.png")]];
+</code></pre>
+<p>等同于这一句：</p>
+<pre><code class="prettyprint">iPhone568Image(@"image.png");
+</code></pre>
+<p>iPhone 5 中会载入 image-568h@2x.png 这样图片。</p>
+<p>利用 isPhone568 这一常量，还可以这样定义适应 iPhone 5 屏幕的位置</p>
+<pre><code class="prettyprint">aLayer.position = CGPointMake( (isPhone568 ? 50 : 20), 23);
+</code></pre>
+<p>参考 - <a href="http://stackoverflow.com/questions/12519110/what-to-name-images-for-iphone-5-screen-size">ios6-uiimageview-loading-568h-image</a></p>
+<h3>image@2x.png</h3>
+<p>imageNamed:, imageWithContentsOfFile:, 和 initWithContentsOfFile: 三个方法会自动加载文件名以 @2x 结尾的图片</p>
+<blockquote>
+<p>On devices with high-resolution screens, the imageNamed:, imageWithContentsOfFile:, and initWithContentsOfFile: methods automatically looks for a version of the requested image with the @2x modifier in its name. If it finds one, it loads that image instead. If you do not provide a high-resolution version of a given image, the image object still loads a standard-resolution image (if one exists) and scales it during drawing.</p>
+</blockquote>
+<h3>设定 CALayer 中的图片</h3>
+<p>如果给 CALayer 填充图片</p>
+<pre><code class="prettyprint">aLayer.contents =(id)aImage.CGImage;
+</code></pre>
+<p>图片并不会自动适应 frame 的大小，需要判断一下屏幕是否为 Retina</p>
+<pre><code class="prettyprint">- (BOOL)isRetinaScreen {
+return ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] 
+&amp;&amp; [[UIScreen mainScreen] scale] == 2);
+}
+</code></pre>
+<p>或者写成</p>
+<pre><code class="prettyprint">#define isRetinaScreen ([[UIScreen mainScreen] respondsToSelector:@selector(scale)] 
+&amp;&amp; [[UIScreen mainScreen] scale] == 2)
+</code></pre>
+<p>然后设定 Retina 屏幕的 contentsScale 值为 2.0</p>
+<pre><code class="prettyprint">if (isRetinaScreen) {
+        aLayer.contentsScale = 2.0;
+    }
+</code></pre>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

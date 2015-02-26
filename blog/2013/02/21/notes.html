@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>杂记 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>杂记</h1>
+        <time>2013-02-21 19:05</time>
+        <article>
+            <p>近日看Lynda的课程做的一些笔记。</p>
+<h3>Class Method 和 Instance Method 的区别：</h3>
+<ul>
+<li><p>Class Method 以 + 号开头，它向Class名称呼叫，
+例如 [NSDate date]；</p>
+</li>
+<li><p>Instance Method 以 - 号开头，它向 Class 生成的实例呼叫，
+例如：[string uppercaseString];</p>
+</li>
+</ul>
+<h3>指针和变量</h3>
+<ul>
+<li>当声明一个整数时 int i = 100; 这个数值是直接存储在内存中的。</li>
+<li>当声明一个 object 时，NSString *str = @"Hello"; str 并不直接保存 Hello 这个值，而是记录 Hello 在内存中的地址信息。</li>
+<li>存储器确切地知道一个数值要用多大的空间来装，而一个对象却可大可小，因此用更灵活的方式来表示，那就是通过指针来引用它。</li>
+<li>所以 int 变量 i 不用 * 号，它就是值本身，而 str 用 * 号，它是指向对象的指针，不是值。</li>
+</ul>
+<h3>Code Snippet Library</h3>
+<ul>
+<li>Xcode 右侧 Utilities 视窗下，点击 {} 图标，显示 Code Snippet Library 窗口。</li>
+<li>这是预置的一些常用函数，可以直接拖放到编辑窗口，短的方法如 if…else…，复杂的例如Core Data Fetch with * Sorting，不需要从空白开始手动写10多行方法。</li>
+<li>也可以把自己写的常用方法选取后拖放到 Snippet 中，右键改名。</li>
+</ul>
+<h3>调整代码缩进</h3>
+<p>选择代码，右键，structure > re-indent。或者按 Command + i</p>
+<h3>抽取部分代码生成新的Function</h3>
+<p>选择代码，右键，Refactor > Extract…，输入函数名称。此操作完成了手工操作的以下3个步骤：</p>
+<ol>
+<li>把这段代码剪切出来；</li>
+<li>命名一个新方法，把代码贴进去；</li>
+<li>在之前剪切出来的位置呼叫它。</li>
+</ol>
+<h3>Preprocessor directives</h3>
+<pre><code class="prettyprint">#if DEBUG
+    NSLog(@"The maximum value of an int is %i", INT_MAX);
+#endif
+</code></pre>
+<p>这段代码只在debug时输出，release时不会有。</p>
+<h3>BOOL值</h3>
+<ul>
+<li>BOOL 用 YES 和 NO，bool 用 true 和 false 表示真假。</li>
+<li>可以用大写的 BOOL，也可以用小写的bool，不过建议用大写，因为作为C语言的衍生语言， Objective-C 加入 BOOL 值时，C 语言中还没有 bool 值，因此 Objective-C 的框架中有大量的函数都是用 BOOL 表示布尔值， Objective-C 对大小写是敏感的，为了安全起见，用大写 BOOL 更可靠。</li>
+<li>输出 BOOL 值用 %i，例如 NSLog(@"The BOOL value is %i", YES)，返回结果用1和0指代真假。</li>
+</ul>
+<h3>Float值</h3>
+<ul>
+<li>永远在 float 值后面加 f，例如 2.1f，因为可能会当 double 看待，影响精度和效率。</li>
+</ul>
+<h3>Loops</h3>
+<ul>
+<li>break 跳出循环；</li>
+<li>continue 不往下执行了，回到起始位置 </li>
+</ul>
+<h3>操作符和表达式</h3>
+<pre><code class="prettyprint">int highScore = (playerOne &gt; playerTwo) ? playerOne : playerTwo;
+</code></pre>
+<p>括号中为条件，当条件为真则 highScore 的值等于 playerOne，否则为 playerTwo。</p>
+<h3>typedef</h3>
+<p>声明参数，不赋值则默认第一个参数为0，依次排序赋值。这样就不需要去记哪个数字代表的具体含义了。</p>
+<pre><code class="prettyprint">typedef enum {window = 99, aisle = 199, middle = 299} seatPreference
+</code></pre>
+<p>引用它</p>
+<pre><code class="prettyprint">seatPreference bobSeatPreference = aisle;
+</code></pre>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

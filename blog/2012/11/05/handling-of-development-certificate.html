@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>对开发证书异常的处理 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>对开发证书异常的处理</h1>
+        <time>2012-11-05 21:36</time>
+        <article>
+            <p>异常报告：</p>
+<pre><code class="prettyprint">xcode could not find a valid private-key/certificate pair for this profile in your keychain
+</code></pre>
+<p>处理办法：</p>
+<ol>
+<li><p>Keychain Access 中，选择 login，选择 Keys，删除所有key，包括 Public key 和 Private Key，删除 Certificates 中所有证书。</p>
+</li>
+<li><p>得到的ios_development.cer文件双击安装之后，Keychain Access中的Certificates可以看到左侧小三角，点开可以看到<em>钥匙图标</em>，表明这是Private key，如果看不到这把钥匙，需要重新revoke一遍。重新下载验证文件。</p>
+</li>
+<li><p>ios_distribution文件安装之后也要看到钥匙图标，没有就revoke。</p>
+</li>
+</ol>
+<h3>对 iOS Provisioning Portal 的认识</h3>
+<ol>
+<li><p>Certificates 中 先下载 WWDR，验证开发者身份，安装到 keyChain 后，发送 request 验证。完了之后 ，提交 CertificateSigningRequest.certSigningRequest，得到ios<em>development文件，安装，还有个 Distribution，也要提交一次CertificateSigningRequest.certSigningRequest，然后下载得到ios</em>distribution文件，安装。两个证书都要有<em>钥匙图标</em>，有时没有，天知道为什么，那就删掉，重新提交，再下载，再安装。</p>
+</li>
+<li><p>devices 添加测试设备</p>
+</li>
+<li><p>app ids 添加ID，不可删除，也不能改名，因为跟发布的APP是关联的。</p>
+</li>
+<li><p>provisioning 中的 development 提供本地设备测试证书，distribution 提供发布证书，发布证书除了要拖放添加到 Provisioning Profiles中之外，LIBRARY里的Provisioning Profiles也要放一份。</p>
+</li>
+<li><p>然后就可以测试和打包了。</p>
+</li>
+</ol>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

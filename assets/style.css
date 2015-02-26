@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'Pacifico'; /*a name to be used later*/
+    src: url('Pacifico.ttf'); /*URL to font*/
+}
+
+body, ul, li, .wrap, h1{ padding: 0; margin: 0;}
+body{ background-color: #ffffff;  font-family:Helvetica, "Trebuchet MS", Georgia, Serif;}
+.container { margin-right: auto; margin-left: auto; max-width: 640px; padding: 0 1em;}
+ul{list-style: none;}
+a {text-decoration: none; color: #4094c7;}
+a:hover { color: #d25c40;}
+
+/*header*/
+/*header, .wrap{ background-color: #434c57;}*/
+header{  padding: 1em 0 3em; text-align: center;}
+.site_name { font-family: "Pacifico","Trebuchet MS", Georgia; color: #333; font-size: 6em; display: block; font-weight: normal;}
+.site_name a { color: #333; text-decoration: none;}
+.site_name a:hover {color: #d25c40;}
+
+
+/*home page*/
+.home li a { font-size: 1.4em; text-decoration: none;}
+.home li a:hover { color: #d25c40;}
+.home li {color: #333; padding-top: 1.5em;}
+.home p{margin-top: .8em;}
+
+.home aside {width: 54px; height: 54px; text-align: center; font-size: 1.5em; line-height: 2em; float: right; color: #8c9198;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;}
+
+a.read_more {display: table-cell; padding: .8em 3em; color: #ffffff; background-color: #4094c7; border-radius: 2px; font-size: 1.1em; }
+.clearfloat {clear: both;}
+
+.go_achives {padding: 1em 1em 3em;}
+
+/*footer*/
+footer{color: #333; padding: 1.2em 0;}
+footer .avatar{border-radius: 30px; float: left;  width: 60px;}
+.profile{float: left; width: 88%; margin-left: 1em; line-height: 1.3em; padding-top: 1em;}
+.copyright, .copyright a{ color: #636363; text-align: right; padding: 1.5em 0 .5em;}
+
+/* archives */
+.post-list h2 { padding-top: 1em; padding-bottom: .3em;  margin:0; color: #333;font-family:
+ "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, sans-serif; font-size: 2em; }
+.post-list ul {padding-top: 1em;}
+.post-list li {margin-bottom: 1em; line-height: 1.4em;}
+.post-list a { font-size: 1.2em; text-decoration: none;text-decoration: none;}
+.post-list li a:hover { color: #d25c40;}
+.post-list li small{color: #8c9198; font-size: 1.0em;}
+.post-list li time {float: right; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;color: #8c9198;font-size: 1.5em;}
+
+
+/* post */
+.post h1 {margin: 0 ; margin: 0 auto; padding: 1em 0 0; font-size: 2.5em; text-align: left; clear: both; overflow: hidden;}
+.post {color: rgb(47, 47, 47);}
+article {line-height: 1.6em; font-size: 1.1em;  padding-top: .8em;}
+.post time {line-height: 2em; display: block; color: #8c9198;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1em;}
+article h2, article h3 { font-size: 1.8em; font-weight: normal; color: rgb(47, 47, 47);}
+
+blockquote {
+position: relative;
+margin-bottom: 25px;
+padding: 20px;
+font-size: 17px;
+font-weight: 100;
+line-height: 30px;
+word-break: break-word;
+border-left: 4px solid #999999;
+background-color: whitesmoke;}
+
+blockquote p:last-child{margin: 0;}
+/*comment*/
+.comments h3{padding: .5em 0; margin: 0; color: #8c9198;}
+.comments a{color: #8c9198;}
+
+pre {overflow: scroll; background-color: rgb(245, 245, 245); border-color: rgba(0, 0, 0, 0.14902);}
+code {overflow: scroll; background-color: rgb(245, 245, 245); font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;}
+
+/*extra*/
+#analytics{display: none;}

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>Git 操作索引 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>Git 操作索引</h1>
+        <time>2014-02-04 20:33</time>
+        <article>
+            <h2>（1）安装 git</h2>
+<p>访问 http://git-scm.com 下载（需梯子）</p>
+<h3>配置文件</h3>
+<ul>
+<li>系统级在 /etc/gitconfig</li>
+<li>用户级在 ~/.gitconfig</li>
+<li><p>项目级在 my_project/.git/config</p>
+</li>
+<li><p><code class="prettyprint">git config --global user.name "jo"</code></p>
+</li>
+<li><code class="prettyprint">git config --global user.email "jo@example.com"</code></li>
+<li><code class="prettyprint">git config --list</code> 查看配置</li>
+<li><code class="prettyprint">git config user.name</code> 查看某个字段</li>
+<li><code class="prettyprint">ls -la</code> 查看目录</li>
+<li><code class="prettyprint">cat .gitconfig</code> 查看文件内容</li>
+<li><code class="prettyprint">git config --global core.editor "mate -wl1"</code> 设置编辑器</li>
+<li><code class="prettyprint">git config --global color.ui ture</code> 使用颜色</li>
+<li><code class="prettyprint">git help</code> 查看帮助文档</li>
+<li><code class="prettyprint">git help log</code> 查看 log 的相关帮助信息</li>
+</ul>
+<h3>Terminal 操作</h3>
+<ul>
+<li>空格键 向前翻页</li>
+<li>b和f 向后/向前翻页</li>
+<li>q 退出并回到命令行状态</li>
+<li>Command + k 清空屏幕</li>
+</ul>
+<h2>（2）开始</h2>
+<ul>
+<li><code class="prettyprint">git init</code> 初始化</li>
+<li><code class="prettyprint">git add .</code>添加更新过的文件</li>
+<li><code class="prettyprint">git commit -m "message"</code> 确认提交，单行说明信息在50个字符以内</li>
+<li><code class="prettyprint">git log</code> 查看日志</li>
+<li><code class="prettyprint">git log -n 1</code> 查看最近1条日志</li>
+<li><code class="prettyprint">git log --since=2012-06-15</code></li>
+<li><code class="prettyprint">git log --until=2012-06-15</code></li>
+<li><code class="prettyprint">git log --author="jo"</code> 查看用户名包含jo的日志</li>
+<li><code class="prettyprint">git log --grep="Init"</code> 查看消息中包含"Init"的日志</li>
+</ul>
+<h2>（3）git 的结构</h2>
+<ul>
+<li><code class="prettyprint">cd .git</code> 进入git目录，ls -la查看目录</li>
+<li><code class="prettyprint">cat HEAD</code> 查看当前指针所在</li>
+<li><code class="prettyprint">cd refs</code> 这个目录下有master</li>
+<li><code class="prettyprint">cat master</code> 查看master的内容，它告诉我们当前HEAD所指向的repository</li>
+</ul>
+<h2>（4）更改文件</h2>
+<ul>
+<li><code class="prettyprint">git status</code> 报告working, staging和repository的情况</li>
+<li><code class="prettyprint">git add file.txt</code> 添加一个文件</li>
+<li><code class="prettyprint">git diff</code> 文件对比，只报告working目录下的文件</li>
+<li><code class="prettyprint">git diff file.txt</code> 对比单个文件</li>
+<li><code class="prettyprint">git diff --staged</code> 查看已经add但未commit的文件的更改情况</li>
+<li><code class="prettyprint">git rm file.txt</code> 删除文件，该文件已经commit，手动删除之后的操作。rm 之后需要 commit 提交更改日志</li>
+<li>手动改名之后 <code class="prettyprint">git add file.txt</code> 然后 <code class="prettyprint">git rm old.txt</code> commit  改名</li>
+<li><code class="prettyprint">git mv second.txt secondary.txt</code> 改名</li>
+<li><code class="prettyprint">git mv third.txt directory/third.txt</code> 移动文件，也是改名</li>
+</ul>
+<h2>项目操作</h2>
+<ul>
+<li>(-) + shift + s + return 查看结果时切换换行模式</li>
+<li>-S + return 切换回单行视图</li>
+<li>git diff --color-words contact.html 以颜色却分对比查看</li>
+<li>git commit -am "message" add 和 commit 同时完成</li>
+</ul>
+<h2>撤销更改</h2>
+<ul>
+<li><code class="prettyprint">git checkout -- index.html</code> 把  working 中的文件恢复到未修改的状态，-- 指向文件或者目录，从 repository 中取回原始数据</li>
+<li><code class="prettyprint">git reset HEAD index.html</code> 把 stage 中的文件恢复成 repo  中的状态，修改后的文件回到 working 状态</li>
+<li><code class="prettyprint">git commit --amend -m "message…"</code> 提交/修改最后一次 commit </li>
+<li><code class="prettyprint">git checkout 2907d12603a34 -- index.html</code> 回到之前的  ocmmit</li>
+<li><code class="prettyprint">git revert da38660bbcd206a9aa</code></li>
+<li><code class="prettyprint">git reset</code>
+1）--soft 改变 repo，但不改变 staging 和 working；
+2）--mixed（默认）改变 staging 和 repo，不改变 working 目录；
+3）--hard 改变所有文件状态和repo一致</li>
+<li><code class="prettyprint">cat .git/HEAD; cat .git/refs/heads/master</code> 查看目前HEAD指针所在</li>
+<li><code class="prettyprint">git reset --soft da38660bbccd</code> 回到此HEAD状态，working  的修改仍然存在。可以移动HEAD指针回到新的位置</li>
+<li><code class="prettyprint">git reset --mixed da38660bbccd</code> staging 中的状态与 repo 一致，working 中的修改需要 add 然后commit</li>
+<li><code class="prettyprint">git clean -f</code> 丢弃/删除 working 中不再需要的文件</li>
+</ul>
+<h2>忽略文件</h2>
+<ul>
+<li><p><code class="prettyprint">nano .gitignore</code> 在工程目录下创建忽视文件
+https://github.com/github/gitignore 参考文件
+在所有的项目中忽视文件
+nano /Users/sxz/.gitignore<em>global<br/>
+git config --global core.excludesfile<br/> ~/.gitignore</em>global<br/>
+cat /Users/sxz/.gitconfig</p>
+</li>
+<li><p><code class="prettyprint">git rm --cached tempfile.txt</code> 从 staging 中移除文件（移除已经tracking的文件），文件仍然保留在working目录中</p>
+</li>
+<li><code class="prettyprint">touch assets/.gitkeep</code> 创建空文件，让 git 保存空目录</li>
+</ul>
+<h2>Commit 树结构</h2>
+<h2>分支</h2>
+<p>查看
+<code class="prettyprint">cat .git/HEAD</code>
+<code class="prettyprint">ls la .git/refs/heads</code>
+<code class="prettyprint">cat .git/refs/heads/master</code>
+- <code class="prettyprint">git branch new_feature</code> 创建 branch
+- <code class="prettyprint">git branch</code> 查看 branch
+- <code class="prettyprint">git checkout new_feature</code> 切换至branch
+- <code class="prettyprint">git show HEAD</code> 显示修改的内容
+- <code class="prettyprint">git checkout -b shorten_title</code> 创建并切换至新的 branch
+- <code class="prettyprint">git log --graph --oneline --decorate --all</code> 显示在不同分支上的所有修改日志
+- <code class="prettyprint">git diff master..new_feature</code> 对比两个版本
+- <code class="prettyprint">git diff --color-words new_feature..shorten_title</code> 对比修改
+- <code class="prettyprint">git branch --merged</code> 显示当前branch所包含的commit(of branch)
+- <code class="prettyprint">git branch -m new_feature seo_title</code> 给 branch 改名
+- <code class="prettyprint">git branch -d branch_to-delete</code> 删除 branch，在 master 上进行</p>
+<p>修改命令行提示符</p>
+<blockquote>
+<p>export PS1='>>>>'
+export PS1='$(_<em>git</em>ps1 "(%s)") > ' 提示符中显示 branch 名
+export PS1='$(\W<strong>git<em>ps1 "(%s)") > '
+以上只是临时有效
+系统设置
+cd ~
+nano .bash</em>profile 
+if [ -f ~/.git-completion.bash ]; then
+  souce ~/.git-completion.bash
+  export PS1='\W$(</strong>git_ps1 "(%S)") > '
+fi</p>
+</blockquote>
+<p>修改保存设置</p>
+<h2>合并 Branch</h2>
+<ul>
+<li><code class="prettyprint">git checkout master</code> 先 checkout 至接收者，然后</li>
+<li><code class="prettyprint">git merge seo_title</code> 把分支上的修改合并至当前 branch
+同一文件不同位置的修改，git 会自动合并两处修改。如果是同一位置的修改，git 提示 merge CONFLICT，这时两个版本会同时存在于文件中，可以进行3种处理
+1）</li>
+<li><code class="prettyprint">git merge --abort</code> 放弃合并
+2）修改后合并
+手工编辑冲突的文件，删除分隔符，然后
+<code class="prettyprint">git add mission.html</code>
+<code class="prettyprint">git commit</code> 回车，删除Conflicts的提示文字，保存
+3）git mergetool</li>
+</ul>
+<h2>更改 Stashing</h2>
+<ul>
+<li><code class="prettyprint">git stash save "changed mission page"</code> 临时保存修改</li>
+<li><code class="prettyprint">git stash list 所有 stash 可以在不同的branch</code>中看到</li>
+<li><code class="prettyprint">git stash show -p stash@{0}</code> 显示 stash 的修改</li>
+<li><code class="prettyprint">git stash pop</code>  pop取回并清除stash，apply取回但保留stash</li>
+<li><code class="prettyprint">git stash drop stash@(0)</code> 删除stash</li>
+<li><code class="prettyprint">git stash clear</code> 清除所有 stash</li>
+</ul>
+<h2>Remotes</h2>
+<ul>
+<li><code class="prettyprint">git remote</code> 显示 remote 分支</li>
+<li><code class="prettyprint">git remote add origin https://github/xxx</code></li>
+<li><code class="prettyprint">cat .git/config</code> 查看 remote 设置</li>
+<li><code class="prettyprint">git remote rm origin</code>  移除 remote 地址</li>
+<li><code class="prettyprint">git push -u origin master</code> 把 master push 至 remote</li>
+<li><code class="prettyprint">git branch -r</code> 显示remote分支</li>
+<li><code class="prettyprint">git branch -a</code> 显示所有分支包括remote</li>
+<li><code class="prettyprint">git clone https://github.com/xxx lynda_version</code> 复制项目到 lynda_version 目录</li>
+<li><code class="prettyprint">git log --oneline origin/master</code>  查看远程仓库的日志</li>
+<li><code class="prettyprint">git diff master..origin/master</code> 查看本地与远程的不同</li>
+<li><code class="prettyprint">git push</code> 在tacking的项目中，git知道要往哪里push</li>
+<li><code class="prettyprint">git fetch</code> 取回新文件</li>
+<li><code class="prettyprint">git merge origin/master</code> 合并远程仓库到本地</li>
+<li><code class="prettyprint">git pull</code> = git fetch + git merge</li>
+</ul>
+<h2>工作指引</h2>
+<ul>
+<li>fetch before you work</li>
+<li>fetch before you push</li>
+<li><p>fetch often</p>
+</li>
+<li><p><code class="prettyprint">git push origin :non_tracking</code> 删除远程仓库中的branch</p>
+</li>
+<li><code class="prettyprint">git push origin --delete non_tracking</code> 同上</li>
+</ul>
+<h2>在开源项目中</h2>
+<ul>
+<li>fork 创建自己的版本，有读写权限；pull request 告知原的作者你有新的修改</li>
+</ul>
+<p><em>以上根据 lynda.com 的 Git Essential Training 课程整理</em></p>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

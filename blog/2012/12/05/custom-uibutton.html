@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>定制 UIButton - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>定制 UIButton</h1>
+        <time>2012-12-05 21:13</time>
+        <article>
+            <p>做到以下设定——</p>
+<ul>
+<li>大小和位置</li>
+<li>文字左对齐</li>
+<li>字体，字体大小和颜色</li>
+<li>文字旁插入小图</li>
+<li>边距</li>
+<li>边框颜色</li>
+<li>圆角弧度</li>
+<li>背景颜色</li>
+</ul>
+<p>codes--</p>
+<pre><code class="prettyprint">UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 457, 55)];
+[button setTitle:@"Select A Practice Mode" forState:UIControlStateNormal];
+button.center = CGPointMake(1024*0.5, 185);
+button.backgroundColor = [UIColor blackColor];
+button.layer.cornerRadius = 15;
+button.layer.masksToBounds = YES;
+button.titleLabel.font = [UIFont fontWithName:@"EuphemiaUCAS-Bold" size:22];
+button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+button.contentEdgeInsets = UIEdgeInsetsMake(0, 70, 0, 0);
+UIImage *btnImage = [UIImage imageNamed:@"setBtnIcon_0.png"];
+button.imageEdgeInsets = UIEdgeInsetsMake(0, -20, 0, 0);
+[button setImage:btnImage forState:UIControlStateNormal];
+button.layer.borderWidth = 2.0f;
+button.layer.borderColor = [UIColor colorWithRed:107.0 / 255 green:107.0 / 255 blue:107.0 / 255 alpha:1.0].CGColor;
+button.tag = 201;
+[button addTarget:self action:@selector(dismissAddFeed:) forControlEvents:UIControlEventTouchUpInside];
+[self.view addSubview:button];
+</code></pre>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 hi.miiday.com
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+@charset "UTF-8";
+
+/* Layout Small Screens */
+header{padding: .2em 0 .2em;}
+.site_name { font-size: 2em; }
+aside, .post-list li time{display: none;}
+footer {text-align: center;}
+footer .avatar{ margin: 0 auto; float: none;}
+.profile{width: 100%; margin: 0 auto; text-align: left;}
+.copyright{text-align: center;}
+.post h1 { padding: .1em 0 0;}
