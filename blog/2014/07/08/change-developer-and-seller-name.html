@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>更改 Developer 和 Seller 的名字 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>更改 Developer 和 Seller 的名字</h1>
+        <time>2014-07-08 22:33</time>
+        <article>
+            <p>个人账号发布的 APP 在 App Store 中显示的 Developer 和 Seller 的名字只能是个人姓名。如果想更换为公司名字，需要电话联络 Apple 的<a href="https://developer.apple.com/contact/phone.php">开发者技术支持</a>提请做更改操作。</p>
+<p>iOS 的付费开发账号有<a href="https://developer.apple.com/programs/which-program/">3种</a>。其中 299 刀的企业（Enterprise）账号只能用于分发测试，<strong>不能用于把APP上架到APP STORE</strong>。
+需要发布APP到APP STORE需要购买99刀的开发者账号。这个账号又分了两种，个人（individual）和公司（organization）。一开始注册账号的时候会提示两种选择。</p>
+<p>虽然你可以另外注册一个99到的公司账号，然后把个人账号的APP转移过去，不过<strong>启用了Push Notification的App是没法转移的</strong>。</p>
+<p>所以更好的办法是把当前个人账号转换为（99刀的）公司账号。需要以下步骤：</p>
+<h3>第一步：申请邓白氏码（D-U-N-S）</h3>
+<p>打开<a href="https://developer.apple.com/ios/enroll/dunsLookupForm.action">申请表单</a>，全英文输入，记住你输入的所有信息，特别是公司英文名，包括标点符号。提交之后会马上收到确认邮件。如果没收到说明没提交成功。
+两三天后会收到当地工作人员打来的电话确认所提交的信息。大概一星期后收到DUNS码。
+关于DUNS码相关说明<a href="https://developer.apple.com/support/D-U-N-S/">在这里</a>。</p>
+<h3>第二步：打电话给 Apple 技术支持</h3>
+<p>iTC 上提交 Contact Us 是没有用的，只能得到“不能更改”的简单答复。在<a href="https://developer.apple.com/contact/phone.php">全球技术支持页面</a>找到支持电话，告诉 Apple 你需要把个人账号升级为公司账号（他们只和账号信息对应的人通话）。对方会确认你有足够的权限，你可以是公司的 Founder 或者 Co-founder。
+之后会收到一封 Email，根据邮件提供的链接，提交资料和DUNS码。
+Apple 技术支持会电话确认。
+没有产生新费用。</p>
+<p>24小时内企业名替换个人姓名同步到全球 App Store。</p>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2015 su3.github.io
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>

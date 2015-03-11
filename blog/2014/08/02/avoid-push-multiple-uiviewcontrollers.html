@@ -3,7 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
-    <title>更新资源文件之后 rebuild，仍然输出旧文件？ - Code Cola</title>
+    <title>避免同时 Push 多个 UIViewController - Code Cola</title>
     <link href="/assets/style.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
     <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
@@ -20,15 +20,39 @@
 <div class="wrap">
     <div class="container post">
 
-        <h1>更新资源文件之后 rebuild，仍然输出旧文件？</h1>
-        <time>2012-10-28 09:38</time>
+        <h1>避免同时 Push 多个 UIViewController</h1>
+        <time>2014-08-02 19:58</time>
         <article>
-            <ul>
-<li>Product -> Clean，清除所有编译文件，这一步不是必须的，因为IDE会跟踪所有资源的改变；</li>
-<li>Product， 按住 option 键，Clean Build Folder ... 清除之前 debug 时生成的 bundle；</li>
-<li>iOS Simulator 中删除 APP；</li>
-<li>如果有必要，在 Build Phases -> Copy Bundle Resources 中把该资源删除，再重新添加。</li>
-</ul>
+            <p>同时（或者快速连续）点击两个 push 出不同 UIViewController 的按钮，会接连 push 出两个 VC，使得平行级别的 A 和 B 两个 VC 变成先后关系，如何避免这种奇怪的体验，使得 push 触发之后，当前 VC 的其他 push 事件不再响应？</p>
+<p>自定义 UINavigationController 类或者写一个它的实例</p>
+<pre><code class="prettyprint">@interface WODNavigationController : UINavigationController
+</code></pre>
+<p>声明遵循委托</p>
+<pre><code class="prettyprint">@interface WDNavigationController ()&lt;UINavigationControllerDelegate&gt;
+</code></pre>
+<p>增加一个属性</p>
+<pre><code class="prettyprint">@property (nonatomic, assign) BOOL shouldIgnorePushingViewControllers;
+</code></pre>
+<p>发出 push 事件的时候判断属性</p>
+<pre><code class="prettyprint">- (void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
+if (!self.shouldIgnorePushingViewControllers)
+{
+    [super pushViewController:viewController animated:animated];
+}
+
+self.shouldIgnorePushingViewControllers = YES;
+}
+</code></pre>
+<p>push 动作结束的时候修改 shouldIgnorePushingViewControllers 值为 NO</p>
+<pre><code class="prettyprint">- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated{
+self.shouldIgnorePushingViewControllers = NO;
+}
+</code></pre>
+<p>补充</p>
+<p>iOS 7下，可能需要在第一个 UIViewController （RootViewController）的 viewDidAppear:(BOOL)animated 中把 shouldIgnorePushingViewControllers 设置为 NO</p>
+<p>参考</p>
+<p><a href="https://gist.github.com/nonamelive/9334458">https://gist.github.com/nonamelive/9334458</a>
+<a href="http://stackoverflow.com/questions/9906966/completion-handler-for-uinavigationcontroller-pushviewcontrolleranimated">http://stackoverflow.com/questions/9906966/completion-handler-for-uinavigationcontroller-pushviewcontrolleranimated</a></p>
 
         </article>
         <br class="clearfloat">
