@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>Swift: 面向协议编程 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>Swift: 面向协议编程</h1>
+        <time>2016-10-30 09:24</time>
+        <article>
+            <h2>简介</h2>
+<p>随着 Swift 2 发布，Apple 给 Swift 加入了一系列新特性，其中最重要的一点是测底改变的协议（Protocol）。这次对协议功能上的提升使得面向协议编程成为可能。这与我们通常所用的面向对象编程有所不同。</p>
+<p>这个教程中，我将分享面向协议编程的基础，显示它与面向对象编程的不同之处。</p>
+<h2>准备</h2>
+<p>需要 Xcode 7 以上，它支持 Swift 2。</p>
+<h2>1.Protocol 基础</h2>
+<p>protocol 是对类或者结构的功能上的拓展。一个 protocol 可以认为是定义了一堆属性和方法的接口。一个 class 或者 sturcture 遵循了一个 protocol，那么需要实现这些对应的属性和方法。</p>
+<p>还要注意到，任何这些属性和方法都可以设计为可选项，这意味着你不是必须实现它们。在 Swift 中定义和实现一个协议是这样：</p>
+<p>`protocol Welcome {
+    var welcomeMessage: String { get set }
+    optional func welcome()
+}</p>
+<p>class Welcomer: Welcome {
+    var welcomeMessage = "Hello World!"
+    func welcome() {
+        print(welcomeMessage)
+    }
+}`</p>
+<h2>2.范例</h2>
+<p>打开 Xcode，创建一个 playground，针对 iOS 或者 OS X 都可以。创建后替换为以下内容：</p>
+<p>`protocol Drivable {
+    var topSpeed: Int { get }
+}</p>
+<p>protocol Reversible {
+    var reverseSpeed: Int { get }
+}</p>
+<p>protocol Transport {
+    var seatCount: Int { get }
+}`</p>
+<p>我们定义了3个协议，每个包含一个属性。接下来，我们创建一个遵循这3个协议的结构。添加如下代码到 playground。</p>
+<p><code class="prettyprint">struct Car: Drivable, Reversible, Transport {
+    var topSpeed = 150
+    var reverseSpeed = 20
+    var seatCount = 5
+}</code></p>
+<p>你可能注意到，我们创建了一个结构，而不是一个类来遵循这些协议。这样做是为了避免面向对象编程的一个典型问题：对象引用。</p>
+<p>比如说，你有两个对象，A 和 B，A 创建了一些属于它自己的数据并且保留了对这些数据的引用。然后 A 通过引用把这些数据与 B 共享，这意味着这它们引用了同一个对象，在 A 不知道的情况下，B 更改了数据。</p>
+<p>当 A 不知道数据被修改，它可能不知道怎样去处理它的数据，这就是对象引用的常规风险。</p>
+<p>在 Swift 中，结构是作为值传递而不是引用。这意味着，在上门这个范例中，如果数据被 A 创建并打包成一个结构而不是对象，然后共享给 B，这些数据将被复制一遍而不是被引用。结果是 A 和 B 都有它们对这份数据的独立的拷贝。B 改变这些恶数据不会影响到 A。</p>
+<p>把 Drivable, Reversible, 和 Transport 打散分别放入各自的协议中可以实现比传统的类继承更高阶的自定义。</p>
+<p>采用这种方式，自定义的数据类型可以从不同的来源中继承函数，而不是通过一个超级类来继承。记住到目前为止，我们可以创建以下类：</p>
+<ul>
+<li>一个包含 Drivable 和 Reversible 协议的类</li>
+<li>一个包含 Drivable 和 Transportable 协议的类</li>
+<li>一个包含 Reversible 和 Transportable 协议的类</li>
+</ul>
+<p>在面向对象编程中，最理想的方法是这3个类继承自同一个父类，这个父类包含了所有的协议。这样导致这个父类变得非常复杂，每一个继承了它的子类也承载了多于所需的功能。</p>
+<h2>3.协议拓展</h2>
+<p>2014 年 Swift 发布的时候，应用了与 Objective-C 同样的面向协议概念。然而打破这些使用协议的限制，实现真正面向协议编程，直到 Swift 发布版本 2 才得以实现。Swift 2 包含许多新特性，其中最重要的一条是协议拓展（extension），包括条件拓展（conditional extension）。</p>
+<p>首先，让我们拓展 Drivable 协议，添加一个函数判断它是否比其他的快。添加以下代码到 playground。</p>
+<p>`extension Drivable {
+    func isFasterThan(item: Drivable) -> Bool {
+        return self.topSpeed > item.topSpeed
+    }
+}</p>
+<p>let sedan = Car()
+let sportsCar = Car(topSpeed: 250, reverseSpeed: 25, seatCount: 2)</p>
+<p>sedan.isFasterThan(sportsCar)`</p>
+<p>你可以看到，当代码执行的时候，当 sedan 默认 topSpeed 是 150 时，这个值比 sportsCar 小，因此它输出 false。</p>
+<p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%204.11.32%20PM.png" alt="" /></p>
+<p>你可能注意到我们提供了函数的定义而不是一个函数的声明。这看起来有点奇怪，因为协议只包含声明，是吗？这是 Swift 2 中 protocal extension 的一个非常重要的特性——默认行为。拓展一个协议，你可以提供函数和属性计算的默认实现，因此遵循这个协议的类不必实现。</p>
+<p>接下来我们定义另一个 Drivable 协议脱簪，但这一次我们只为那些同时遵循了 Reversible 协议的值类型作定义。这个 extension 将包含一个函数，判断哪个对象有更大的速度范围。我们的到以下代码：</p>
+<p>`extension Drivable where Self: Reversible {
+    func hasLargerRangeThan(item: Self) -> Bool {
+        return (self.topSpeed + self.reverseSpeed) > (item.topSpeed + item.reverseSpeed)
+    }
+}</p>
+<p>sportsCar.hasLargerRangeThan(sedan)`</p>
+<p>关键词 Self 拼写为大写 S，用于代表遵循了这个协议的当前类或者结构体。在上面这个例子中， Self 代表 Car 结构。</p>
+<p>执行 playgound 代码后，Xcode 将输出结果在右栏。显示 sportsCar 比  sedan 范围更大。</p>
+<p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%205.32.54%20PM.png" alt="" /></p>
+<h2>4.拓展 Swift 标准库</h2>
+<p>定义和拓展你的协议非常有用，而 protocol extension 的真正强大之处在于拓展 Swift 标准库。它允许你添加属性或函数到已存在的协议中，比如 CollectionType（用于数组或者字典）和 Equatable（判断两个对象是否相等）。通过条件协议脱簪，我们还可以为一些遵循某个协议的类型对象提供非常特别的函数。</p>
+<p>在 playgound 中，我们拓展 CollectionType 协议，创建两个方法，一个得到 Car 数组中所有车辆的平均速度，另一个得到平均倒车速度。添加如下代码到 playground:</p>
+<p>`extension CollectionType where Self.Generator.Element: Drivable {
+    func averageTopSpeed() -> Int {
+        var total = 0, count = 0
+        for item in self {
+            total += item.topSpeed
+            count++
+        }
+        return (total/count)
+    }
+}</p>
+<p>func averageReverseSpeed<T: CollectionType where T.Generator.Element: Reversible>(items: T) -> Int {
+    var total = 0, count = 0
+    for item in items {
+        total += item.reverseSpeed
+        count++
+    }
+    return (total/count)
+}</p>
+<p>let cars = [Car(), sedan, sportsCar]
+cars.averageTopSpeed()
+averageReverseSpeed(cars)`</p>
+<p>这个协议 extension 定义了 avarageTopSpeed 方法，利用了 Swift 2 的条件拓展特性。与之相对的，我们直接在下面定义的 averageReverseSpeed 方法利用 Swift 泛型实现了类似的结果。我个人更倾向于更清晰的 CollectonType 类型拓展。</p>
+<p>当你的 playground 执行了所有代码，你讲看到输出平均最高速度 183 以及平均倒车速度 21。</p>
+<p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%206.07.23%20PM.png" alt="" /> </p>
+<h2>5.类的重要性</h2>
+<p>尽管在 Swift 中，面向协议编程是一个非常有效以及便于拓展的方法管理你的代码，但是仍然有非常合理的理由在 Swift 开发中使用类。</p>
+<h3>向后兼容性</h3>
+<p>大多数 iOS, watchOS 和 tvOS SDK 是用 Objective-C 来写的，使用面向对象编程的方式。如果你需要与这些 SDK 中的 api 交互，你不得不使用这些 SDK 中使用类。</p>
+<h3>引用外部文件或者项目</h3>
+<p>Swift 编译器基于何时何地使用来优化对象的生命周期。固定的类对象意味着你对其他文件和项目的引用必须保持一致性。</p>
+<h3>对象引用</h3>
+<p>有时你需要对象引用，比如当你提供信息到一个特定对象，例如图形渲染，使用隐性共享重要状态的类，因为你需要确认你发送数据给到的渲染器仍然是和之前一样的渲染器。</p>
+<h2>结论</h2>
+<p>希望在这个教程结束的时候你能看到 Swift 中面向协议编程的潜能，以及如何使用它来组织和拓展你的代码。尽管这个编程的新方法并不完全替代面向对象编程，但它确实非常，也带来了很多可能性。</p>
+<p>从协议拓展的默认行为，Swift 中面向协议编程将被许多未来的 API 所采用，并将完全改变我们对于软件开发的思考方式。</p>
+<p>原文：<a href="https://code.tutsplus.com/tutorials/protocol-oriented-programming-in-swift-2--cms-24979">https://code.tutsplus.com/tutorials/protocol-oriented-programming-in-swift-2--cms-24979</a>
+作者：<a href="https://tutsplus.com/authors/davis-allie">Davia Allie</a></p>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2016 su3.github.io
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
