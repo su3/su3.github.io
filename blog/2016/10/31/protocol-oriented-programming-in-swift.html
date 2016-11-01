@@ -24,7 +24,7 @@
         <time>2016-10-30 09:24</time>
         <article>
             <h2>简介</h2>
-<p>随着 Swift 2 发布，Apple 给 Swift 加入了一系列新特性，其中最重要的一点是测底改变的协议（Protocol）。这次对协议功能上的提升使得面向协议编程成为可能。这与我们通常所用的面向对象编程有所不同。</p>
+<p>随着 Swift 2 发布，Apple 给 Swift 编程语言加入了一系列新特性和能力，其中最重要的一点是对协议（Protocol）的彻底修订。这次对协议功能上的提升使得面向协议编程成为可能。这与我们通常所用的面向对象编程有很大不同。</p>
 <p>这个教程中，我将分享面向协议编程的基础，显示它与面向对象编程的不同之处。</p>
 <h2>准备</h2>
 <p>需要 Xcode 7 以上，它支持 Swift 2。</p>
@@ -69,7 +69,7 @@
 <li>一个包含 Drivable 和 Transportable 协议的类</li>
 <li>一个包含 Reversible 和 Transportable 协议的类</li>
 </ul>
-<p>在面向对象编程中，最理想的方法是这3个类继承自同一个父类，这个父类包含了所有的协议。这样导致这个父类变得非常复杂，每一个继承了它的子类也承载了多于所需的功能。</p>
+<p>在面向对象编程中，最理想的方法是这3个类继承自同一个父类，这个父类包含了所有的协议。这样导致这个父类变得非常复杂，每一个继承了它的子类也承载了多于所需的能力。</p>
 <h2>3.协议拓展</h2>
 <p>2014 年 Swift 发布的时候，应用了与 Objective-C 同样的面向协议概念。然而打破这些使用协议的限制，实现真正面向协议编程，直到 Swift 发布版本 2 才得以实现。Swift 2 包含许多新特性，其中最重要的一条是协议拓展（extension），包括条件拓展（conditional extension）。</p>
 <p>首先，让我们拓展 Drivable 协议，添加一个函数判断它是否比其他的快。添加以下代码到 playground。</p>
@@ -83,8 +83,8 @@ let sportsCar = Car(topSpeed: 250, reverseSpeed: 25, seatCount: 2)</p>
 <p>sedan.isFasterThan(sportsCar)`</p>
 <p>你可以看到，当代码执行的时候，当 sedan 默认 topSpeed 是 150 时，这个值比 sportsCar 小，因此它输出 false。</p>
 <p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%204.11.32%20PM.png" alt="" /></p>
-<p>你可能注意到我们提供了函数的定义而不是一个函数的声明。这看起来有点奇怪，因为协议只包含声明，是吗？这是 Swift 2 中 protocal extension 的一个非常重要的特性——默认行为。拓展一个协议，你可以提供函数和属性计算的默认实现，因此遵循这个协议的类不必实现。</p>
-<p>接下来我们定义另一个 Drivable 协议脱簪，但这一次我们只为那些同时遵循了 Reversible 协议的值类型作定义。这个 extension 将包含一个函数，判断哪个对象有更大的速度范围。我们的到以下代码：</p>
+<p>你可能注意到我们提供了函数的定义而不是一个函数的声明。这看起来有点奇怪，因为协议只包含声明，是吗？这是 Swift 2 中 protocal extension 的一个非常重要的特性——默认行为（default behaviors）。拓展一个协议，你可以提供函数和属性计算的默认实现，因此遵循这个协议的类不必去实现它。</p>
+<p>接下来我们定义另一个 Drivable 协议拓展，但这一次我们只为那些同时遵循了 Reversible 协议的值类型作定义。这个 extension 将包含一个函数，判断哪个对象有更大的速度范围。我们的到以下代码：</p>
 <p>`extension Drivable where Self: Reversible {
     func hasLargerRangeThan(item: Self) -> Bool {
         return (self.topSpeed + self.reverseSpeed) > (item.topSpeed + item.reverseSpeed)
@@ -95,7 +95,7 @@ let sportsCar = Car(topSpeed: 250, reverseSpeed: 25, seatCount: 2)</p>
 <p>执行 playgound 代码后，Xcode 将输出结果在右栏。显示 sportsCar 比  sedan 范围更大。</p>
 <p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%205.32.54%20PM.png" alt="" /></p>
 <h2>4.拓展 Swift 标准库</h2>
-<p>定义和拓展你的协议非常有用，而 protocol extension 的真正强大之处在于拓展 Swift 标准库。它允许你添加属性或函数到已存在的协议中，比如 CollectionType（用于数组或者字典）和 Equatable（判断两个对象是否相等）。通过条件协议脱簪，我们还可以为一些遵循某个协议的类型对象提供非常特别的函数。</p>
+<p>定义和拓展你的协议非常有用，而 protocol extension 的真正强大之处在于拓展 Swift 标准库。它允许你添加属性或函数到已存在的协议中，比如 CollectionType（用于数组或者字典）和 Equatable（判断两个对象是否相等）。通过条件协议拓展，我们还可以为一些遵循某个协议的类型对象提供非常特别的函数。</p>
 <p>在 playgound 中，我们拓展 CollectionType 协议，创建两个方法，一个得到 Car 数组中所有车辆的平均速度，另一个得到平均倒车速度。添加如下代码到 playground:</p>
 <p>`extension CollectionType where Self.Generator.Element: Drivable {
     func averageTopSpeed() -> Int {
@@ -118,20 +118,20 @@ let sportsCar = Car(topSpeed: 250, reverseSpeed: 25, seatCount: 2)</p>
 <p>let cars = [Car(), sedan, sportsCar]
 cars.averageTopSpeed()
 averageReverseSpeed(cars)`</p>
-<p>这个协议 extension 定义了 avarageTopSpeed 方法，利用了 Swift 2 的条件拓展特性。与之相对的，我们直接在下面定义的 averageReverseSpeed 方法利用 Swift 泛型实现了类似的结果。我个人更倾向于更清晰的 CollectonType 类型拓展。</p>
+<p>这个协议 extension 定义了 avarageTopSpeed 方法，利用了 Swift 2 的条件拓展特性。与之相比较的，我们直接在下面定义的 averageReverseSpeed 方法利用 Swift 泛型实现了类似的结果。我个人更倾向于更清晰的 CollectonType 类型拓展。</p>
 <p>当你的 playground 执行了所有代码，你讲看到输出平均最高速度 183 以及平均倒车速度 21。</p>
 <p><img src="https://cms-assets.tutsplus.com/uploads/users/855/posts/24979/image/Screen%20Shot%202015-10-06%20at%206.07.23%20PM.png" alt="" /> </p>
 <h2>5.类的重要性</h2>
-<p>尽管在 Swift 中，面向协议编程是一个非常有效以及便于拓展的方法管理你的代码，但是仍然有非常合理的理由在 Swift 开发中使用类。</p>
+<p>尽管在 Swift 中，面向协议编程是管理代码的一个非常有效以及便于拓展的方法，但是仍然有非常合理的理由在 Swift 开发中使用类。</p>
 <h3>向后兼容性</h3>
 <p>大多数 iOS, watchOS 和 tvOS SDK 是用 Objective-C 来写的，使用面向对象编程的方式。如果你需要与这些 SDK 中的 api 交互，你不得不使用这些 SDK 中使用类。</p>
 <h3>引用外部文件或者项目</h3>
 <p>Swift 编译器基于何时何地使用来优化对象的生命周期。固定的类对象意味着你对其他文件和项目的引用必须保持一致性。</p>
 <h3>对象引用</h3>
 <p>有时你需要对象引用，比如当你提供信息到一个特定对象，例如图形渲染，使用隐性共享重要状态的类，因为你需要确认你发送数据给到的渲染器仍然是和之前一样的渲染器。</p>
-<h2>结论</h2>
-<p>希望在这个教程结束的时候你能看到 Swift 中面向协议编程的潜能，以及如何使用它来组织和拓展你的代码。尽管这个编程的新方法并不完全替代面向对象编程，但它确实非常，也带来了很多可能性。</p>
-<p>从协议拓展的默认行为，Swift 中面向协议编程将被许多未来的 API 所采用，并将完全改变我们对于软件开发的思考方式。</p>
+<h2>总结</h2>
+<p>希望在这个教程结束的时候你能看到 Swift 中面向协议编程的潜能，以及如何使用它来组织和拓展你的代码。尽管这个编程的新方法并不完全替代面向对象编程，但它确实非常有用，也带来了很多可能性。</p>
+<p>从默认行为到协议拓展，Swift 中面向协议编程将被许多未来的 API 所采用，并将完全改变我们对于软件开发的思考方式。</p>
 <p>原文：<a href="https://code.tutsplus.com/tutorials/protocol-oriented-programming-in-swift-2--cms-24979">https://code.tutsplus.com/tutorials/protocol-oriented-programming-in-swift-2--cms-24979</a>
 作者：<a href="https://tutsplus.com/authors/davis-allie">Davia Allie</a></p>
 
