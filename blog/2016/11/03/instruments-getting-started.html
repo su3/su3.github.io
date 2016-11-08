@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, maxmum-scale=1.0, minmum=-scale=1.0, initial-scale=1.0" />
+    <title>用 Instruments 为 App 做性能优化 - Code Cola</title>
+    <link href="/assets/style.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="only screen and (min-width:50px) and (max-width:500px)" href="/assets/screen_layout_small.css" />
+    <link rel="stylesheet" href="/assets/highlighter/prettify.css" />
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+    <script src="http://libs.useso.com/js/html5shiv/3.7/html5shiv.min.js"></script>
+    <script src="http://libs.useso.com/js/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body>
+<header>
+    <strong class="site_name"><a href="/">Code Cola</a></strong>
+</header>
+<div class="wrap">
+    <div class="container post">
+
+        <h1>用 Instruments 为 App 做性能优化</h1>
+        <time>2016-11-03 21:24</time>
+        <article>
+            <p>所有测试都应该在真实设备上而不是模拟器上执行，以便了解在设备性能有限的情况下的执行情况。</p>
+<h2>基础分析与操作</h2>
+<ol>
+<li>可以添加多个测试模板到同一个视窗。</li>
+<li>在时间轴面板中点击拖拉特定区域，可以看到详情面板中将只显示与该区域相关的记录。</li>
+<li>展开 Details 面板的树形结构，黑色图标表示此可以关联到特定的代码，双击查看，对 debug 某处很有帮助。</li>
+<li>Edit > Add Flag 添加标签，记录留待观察的位置。</li>
+<li>cmd + shift + { 或 } 切换最近两次测试的记录，对比不同的执行情况。</li>
+<li>右栏中选择 Display Settings 面板，勾选 Hide System Libraries 隐藏系统相关的记录。</li>
+</ol>
+<p><img src="http://7j1wa0.com1.z0.glb.clouddn.com/instruments_01.jpg" alt="" /></p>
+<h2>Allocations：内存占用检查</h2>
+<p>Alllocation 将提供所有创建的对象信息，以及它们占用了多少内存，它还记录了引用次数。</p>
+<ol>
+<li>cmd + i 后选择 Allocations，检查内存空间的使用情况。</li>
+<li>在操作 App 过程中，如果时间轴中的内存一直增加没有消退，那么可能有内存没有被释放。</li>
+<li>查看 Growth 栏，看看哪些对象占用的的内存比较多。</li>
+</ol>
+<p><img src="http://7j1wa0.com1.z0.glb.clouddn.com/instruments_02.jpg" alt="" /></p>
+<h2>Time Profiler：CPU 消耗检查</h2>
+<p>Timer Profiler 将帮助我们找到执行起来比较慢的函数。通常我们用来发现那些中主线程中执行的拖慢速度的函数。查看 Call Tree 列表，展开 Main Thread，找到耗时百分比较大的函数，这可能是需要优化的地方。</p>
+<ol>
+<li>cmd + i 后选择 Time Profiler，检查 CPU 消耗情况。</li>
+<li>勾选 Hide System Libraries 隐藏系统消耗记录</li>
+<li>在 Details 面板中找到消耗时间较长的记录，展开树形结构，回到 Xcode 中修改相应的方法。</li>
+</ol>
+<p><img src="http://7j1wa0.com1.z0.glb.clouddn.com/instruments_03.jpg" alt="" /></p>
+<h2>Network：网络请求检查</h2>
+<ol>
+<li>cmd + i 后选择 Network，All Connections 中跟踪网络请求，观察是否有不必要的请求发生。</li>
+<li>点右上角工具栏 + 号添加 Network Activity Log，当有数据传输时可以在 Network Activity 中看到，如果想知道多少数据量下载到本地，可以在这个模版中看到。</li>
+<li>回到 Xcode 中修改代码，找到网络请求发生的地方，缓存已下载的数据。</li>
+</ol>
+<p><img src="http://7j1wa0.com1.z0.glb.clouddn.com/instruments_04.jpg" alt="" /></p>
+<h2>Core Animation：视图渲染检查</h2>
+<p>iOS 渲染内容的理想速度是每秒 60 桢，如果达不到这个速度，那么 App 可能会显得滞后或者跳跃。当滚动复杂的 TableView 或者 CollectionView 的时候这点尤为重要。 Instruments 可以帮助我们识别和追踪看看我们的 App 中哪些 view 渲染比较慢。</p>
+<ol>
+<li>cmd + i 后选择 Core Animation。</li>
+<li>右下栏勾选 Color Blended Layers，它将把混合着色的区域染上红色，比如有半透明的 view 与另外一个 view 重叠。避免使用透明的 view，不要使用背景色为 clearColor 的视图。 </li>
+<li>勾选 Color Offscreen-Rendered Yellow 将把渲染两次的 view 显示为黄色，（一次显示渲染+一次离屏渲染）。</li>
+</ol>
+<p>参考：</p>
+<ol>
+<li><a href="https://www.lynda.com/iOS-SDK-tutorials/Improving-iOS-performance-Xcode-Instruments/452088-2.html">https://www.lynda.com/iOS-SDK-tutorials/Improving-iOS-performance-Xcode-Instruments/452088-2.html</a></li>
+<li><a href="https://littlebitesofcocoa.com/68-time-profiler-basics">https://littlebitesofcocoa.com/68-time-profiler-basics</a></li>
+<li><a href="https://www.raywenderlich.com/97886/instruments-tutorial-with-swift-getting-started">https://www.raywenderlich.com/97886/instruments-tutorial-with-swift-getting-started</a></li>
+</ol>
+
+        </article>
+        <br class="clearfloat">
+    </div>
+</div>
+
+<!-- comments begin-->
+<section class="wrap">
+    <div class="container comments">
+        <h3>评论</h3>
+        <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'codecola'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+    </div>
+
+</section>
+<!-- comments end -->
+
+<footer>
+    <div class="container copyright">
+            copyright &copy 2016 su3.github.io
+    </div>
+</footer>
+<div id="analytics"><script src="/assets/analytics.js"></script></div>
+<script src="/assets/highlighter/prettify.js"></script>
+<script>prettyPrint();</script>
+</body>
+</html>
