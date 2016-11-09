@@ -54,6 +54,7 @@ footer .avatar{border-radius: 30px; float: left;  width: 60px;}
 article {line-height: 1.6em; font-size: 1.1em;  padding-top: .8em;}
 .post time {line-height: 2em; display: block; color: #8c9198;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 1em;}
 article h2, article h3 { font-size: 1.8em; font-weight: normal; color: rgb(47, 47, 47);}
+article img{ width:100%;   max-width:640px;}
 
 blockquote {
 position: relative;
